@@ -206,13 +206,7 @@ export default function TestimoniesSection() {
           <div className="relative w-full h-[300px] sm:h-[380px] lg:h-auto">
             <div className="absolute inset-0 -left-2 lg:-left-6 bottom-0">
               <div className="relative w-full h-full">
-                <Image
-                  src={heroImageSrc}
-                  alt="Humanitarian support and success stories"
-                  fill
-                  className="object-contain"
-                  loading="lazy"
-                />
+                
               </div>
             </div>
             {/* Mobile/Tablet sizing hints */}
