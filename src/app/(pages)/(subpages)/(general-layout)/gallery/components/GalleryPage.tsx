@@ -179,47 +179,54 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
   // drag-to-scroll for thumbnail strip
   useEffect(() => {
     const el = stripRef.current
-    if (!el) return
     let isDown = false
     let startX = 0
     let scrollLeft = 0
 
     function onPointerDown(e: PointerEvent) {
+      if (!el) return
       isDown = true
       el.setPointerCapture(e.pointerId)
       startX = e.clientX
       scrollLeft = el.scrollLeft
     }
     function onPointerMove(e: PointerEvent) {
-      if (!isDown) return
+      if (!el || !isDown) return
       const x = e.clientX
       const walk = (startX - x)
       el.scrollLeft = scrollLeft + walk
     }
     function onPointerUp(e: PointerEvent) {
+      if (!el) return
       isDown = false
       try {
         el.releasePointerCapture(e.pointerId)
       } catch {}
     }
 
-    el.addEventListener('pointerdown', onPointerDown)
-    el.addEventListener('pointermove', onPointerMove)
-    window.addEventListener('pointerup', onPointerUp)
-
     function onWheel(e: WheelEvent) {
+      if (!el) return
       if (Math.abs(e.deltaX) > 0 || Math.abs(e.deltaY) > 0) {
         // convert vertical wheel to horizontal
         el.scrollLeft += e.deltaY ?? e.deltaX
       }
     }
-    el.addEventListener('wheel', onWheel)
+
+    if (el) {
+      el.addEventListener('pointerdown', onPointerDown)
+      el.addEventListener('pointermove', onPointerMove)
+      window.addEventListener('pointerup', onPointerUp)
+      el.addEventListener('wheel', onWheel)
+    }
+
 
     return () => {
-      el.removeEventListener('pointerdown', onPointerDown)
-      el.removeEventListener('pointermove', onPointerMove)
-      window.removeEventListener('pointerup', onPointerUp)
-      el.removeEventListener('wheel', onWheel)
+      if (el) {
+        el.removeEventListener('pointerdown', onPointerDown)
+        el.removeEventListener('pointermove', onPointerMove)
+        window.removeEventListener('pointerup', onPointerUp)
+        el.removeEventListener('wheel', onWheel)
+      }
     }
   }, [])
 
@@ -274,7 +281,9 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
             {album.images.map((src, i) => (
               <button
                 key={src + i}
-                ref={(el) => (thumbRefs.current[i] = el)}
+                ref={(el: HTMLButtonElement | null) => {
+                  thumbRefs.current[i] = el
+                }}
                 onClick={() => setCurrent(i)}
                 aria-label={`Thumbnail ${i + 1} of ${album.images.length}`}
                 aria-current={i === current}
