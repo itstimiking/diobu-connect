@@ -232,14 +232,19 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] flex items-center justify-center"
+      className="fixed inset-0 z-[2147483647] flex items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       role="dialog"
       aria-modal="true"
-      aria-label={`Gallery viewer: ${album.title}`}>
-      <div className="absolute inset-0 bg-black/90" onClick={onClose} />
+      aria-label={`Gallery viewer: ${album.title}`}
+      onMouseDown={(e) => {
+        // Close only when clicking the dimmed backdrop (not the modal content)
+        if (e.target === e.currentTarget) onClose()
+      }}
+    >
+      <div className="absolute inset-0 bg-black/90" />
 
       <motion.section
         ref={modalRef}
@@ -247,7 +252,7 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
         animate={{ y: 0, opacity: 1 }}
         exit={{ y: 30, opacity: 0 }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-        className="relative w-full h-full max-w-[1400px] max-h-[96vh] mx-4 md:mx-8 lg:mx-12 flex flex-col">
+        className="relative w-full h-full max-w-[1400px] max-h-[96vh] mx-4 md:mx-8 lg:mx-12 flex flex-col z-[1]">
 
         <div className="flex items-center justify-between p-4 z-10">
           <div className="text-left text-sm text-zinc-200">
@@ -255,9 +260,14 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
             <div className="text-zinc-400 text-xs">{album.images.length} photos</div>
           </div>
           <div className="text-center text-sm text-zinc-200">Image {current + 1} of {album.images.length}</div>
-          <button ref={closeButtonRef} aria-label="Close gallery" onClick={onClose} className="ml-4 p-2 rounded-md bg-white/6 hover:bg-white/10">
-            <HiOutlineX className="w-5 h-5 text-white" />
-          </button>
+            <button
+              ref={closeButtonRef}
+              aria-label="Close gallery"
+              onClick={onClose}
+              className="ml-4 p-2 rounded-md bg-white/6 hover:bg-white/10"
+            >
+              <HiOutlineX className="w-5 h-5 text-white" />
+            </button>
         </div>
 
         <div className="flex-1 flex flex-col items-center justify-center">
@@ -269,6 +279,7 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
             >
               <HiOutlineChevronLeft className="w-6 h-6 text-white" />
             </button>
+
 
             <motion.div
               key={album.images[current]}
@@ -305,8 +316,17 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
           </div>
         </div>
 
-        <div className="py-4">
-          <div ref={stripRef} className="flex gap-3 overflow-x-auto no-scrollbar px-4 py-2">
+        <div className="mt-auto py-4">
+          <button
+            aria-label="Close gallery"
+            onClick={onClose}
+            className="mx-auto mb-3 flex items-center justify-center px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-semibold"
+          >
+            Close
+          </button>
+
+          {/* Keep thumbnail row always visible; allow horizontal scroll */}
+          <div ref={stripRef} className="flex gap-3 overflow-x-auto no-scrollbar px-4 py-2 w-full">
             {album.images.map((src, i) => (
               <button
                 key={src + i}
