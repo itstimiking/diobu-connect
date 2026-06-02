@@ -21,7 +21,7 @@ const FooterComponent = () => {
             {/* Brand & Description */}
             <div className='lg:col-span-1'>
               <h3 className='text-2xl font-extrabold text-white mb-4'>
-                Diobu <span className='text-purple-400'>Connect</span>
+                Diobu Connect Heritage
               </h3>
               <p className='text-sm leading-relaxed text-gray-400'>
                 Empowering the Diobu community through connection, 
