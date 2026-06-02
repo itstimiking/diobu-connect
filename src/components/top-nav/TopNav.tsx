@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { FiMenu, FiX } from 'react-icons/fi'
 
 const navLinks = [
+  { label: 'Home', href: '/home' },
   { label: 'Events', href: '/events' },
   { label: 'Blog', href: '/blog' },
   { label: 'Gallery', href: '/gallery' },
@@ -45,13 +46,13 @@ const TopNavComponent = () => {
       {/* Logo */}
       <div className='text-4xl font-extrabold'>
         <Link href='/home'>
-          Diobu <span className='text-slate-200'>Connect</span>
+          Diobu Connect
         </Link>
       </div>
 
       {/* Desktop Nav Links */}
       <div className='hidden md:flex flex-1 justify-end'>
-        <div className='flex justify-between sm:gap-5 md:gap-12 text-xl'>
+        <div className='flex justify-between sm:gap-5'>
           {navLinks.map((link) => (
             <div key={link.href} className='w-20 flex justify-center'>
               <Link href={link.href} className='top-nav'>
