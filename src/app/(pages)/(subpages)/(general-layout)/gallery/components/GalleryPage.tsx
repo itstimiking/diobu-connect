@@ -262,15 +262,44 @@ function GalleryModal({ album, index, onClose, onIndexChange }: { album: Album; 
 
         <div className="flex-1 flex flex-col items-center justify-center">
           <div className="relative w-full flex-1 flex items-center justify-center overflow-hidden">
-            <button aria-label="Previous image" onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/6 hover:bg-white/10">
+            <button
+              aria-label="Previous image"
+              onClick={prev}
+              className="absolute left-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/6 hover:bg-white/10"
+            >
               <HiOutlineChevronLeft className="w-6 h-6 text-white" />
             </button>
-            <motion.div key={album.images[current]} className="max-h-[75vh] w-full flex items-center justify-center">
-              <motion.div initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -10 }} transition={{ duration: 0.35 }} className="mx-auto h-[75vh] w-full max-w-[1100px] flex items-center justify-center">
-                <Image src={album.images[current]} alt={`${album.title} ${current + 1}`} width={1600} height={1200} style={{ objectFit: 'contain' }} className="select-none" />
+
+            <motion.div
+              key={album.images[current]}
+              className="max-h-[75vh] w-full flex items-center justify-center"
+            >
+              <motion.div
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -10 }}
+                transition={{ duration: 0.35 }}
+                className="mx-auto w-full max-w-[1100px] px-0 md:px-0 flex items-center justify-center"
+              >
+                {/* Mobile-friendly: constrain by viewport and use responsive sizing */}
+                <div className="w-full max-w-[1100px] h-[75vh] max-h-[75vh] flex items-center justify-center">
+                  <Image
+                    src={album.images[current]}
+                    alt={`${album.title} ${current + 1}`}
+                    fill
+                    sizes="(max-width: 768px) 92vw, 1100px"
+                    style={{ objectFit: 'contain' }}
+                    className="select-none"
+                  />
+                </div>
               </motion.div>
             </motion.div>
-            <button aria-label="Next image" onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/6 hover:bg-white/10">
+
+            <button
+              aria-label="Next image"
+              onClick={next}
+              className="absolute right-2 top-1/2 -translate-y-1/2 z-20 p-2 rounded-full bg-white/6 hover:bg-white/10"
+            >
               <HiOutlineChevronRight className="w-6 h-6 text-white" />
             </button>
           </div>

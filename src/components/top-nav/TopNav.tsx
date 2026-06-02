@@ -71,36 +71,6 @@ const TopNavComponent = () => {
       >
         {menuOpen ? <FiX size={32} /> : <FiMenu size={32} />}
       </button>
-
-      {/* Mobile Menu Overlay */}
-      {menuOpen && (
-        <div className='fixed inset-0 z-40'>
-          <div
-            className='absolute inset-0 bg-black/70 backdrop-blur-sm'
-            onClick={closeMenu}
-          />
-          <div className='absolute top-0 right-0 h-full w-72 bg-purple-950 shadow-2xl animate-slide-in'>
-            <div className='flex flex-col pt-24 px-8 gap-2'>
-              {navLinks.map((link, i) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  onClick={closeMenu}
-                  className={`
-                    text-xl text-gray-200 hover:text-purple-400 
-                    font-medium py-3 border-b border-purple-800/40
-                    transition-all duration-300
-                    animate-fade-in
-                  `}
-                  style={{ animationDelay: `${i * 80}ms` }}
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   )
 
@@ -130,6 +100,36 @@ const TopNavComponent = () => {
       >
         {navContent()}
       </nav>
+
+      {/* Mobile Menu Overlay — rendered once at the top level so it isn't duplicated */}
+      {menuOpen && (
+        <div className='fixed inset-0 z-40'>
+          <div
+            className='absolute inset-0 bg-black/70 backdrop-blur-sm'
+            onClick={closeMenu}
+          />
+          <div className='absolute top-0 right-0 h-full w-72 bg-purple-950 shadow-2xl animate-slide-in'>
+            <div className='flex flex-col pt-24 px-8 gap-2'>
+              {navLinks.map((link, i) => (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={closeMenu}
+                  className={`
+                    text-xl text-gray-200 hover:text-purple-400 
+                    font-medium py-3 border-b border-purple-800/40
+                    transition-all duration-300
+                    animate-fade-in
+                  `}
+                  style={{ animationDelay: `${i * 80}ms` }}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <style jsx>{`
         @keyframes slideIn {
